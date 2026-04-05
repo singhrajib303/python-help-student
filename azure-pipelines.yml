@@ -1,0 +1,39 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10'
+  displayName: 'Use Python 3.10'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+- script: |
+    echo "Running basic test..."
+    python -c "print('Build successful!')"
+  displayName: 'Run basic test'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '.'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: $(Build.ArtifactStagingDirectory)/app.zip
+    replaceExistingArchive: true
+  displayName: 'Archive app'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: drop
+  displayName: 'Publish Artifact'
