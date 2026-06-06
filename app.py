@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "🚀 Azure DevOps Pipeline Demo - Python App Running!"
+    return "🚀 Azure DevOps Pipeline Demo - Python App new Running!"
 
 @app.route("/health")
 def health():
